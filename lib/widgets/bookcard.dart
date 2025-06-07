@@ -29,6 +29,7 @@ class BookCard extends StatelessWidget {
                   child: Image.network(
                     coverUrl,
                     width: 100.0,
+                    height: 134.0,
                     // Remove height to allow vertical fit
                     fit: BoxFit.cover,
                   ),
