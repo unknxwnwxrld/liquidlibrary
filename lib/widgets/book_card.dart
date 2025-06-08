@@ -45,7 +45,7 @@ class BookCard extends StatelessWidget {
     }
 
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(4),
       child: SizedBox(
         height: 167.0,
         width: double.infinity,
@@ -90,7 +90,7 @@ class BookCard extends StatelessWidget {
                             color: Colors.grey[600],
                           ),
                         ),
-                        const SizedBox(height: 20.0),
+                        const SizedBox(height: 5.0),
                         Row(
                           children: [
                             Expanded(
@@ -99,7 +99,7 @@ class BookCard extends StatelessWidget {
                                 backgroundColor: Colors.grey[300],
                               ),
                             ),
-                            const SizedBox(width: 10.0),
+                            const SizedBox(width: 5.0),
                             Text(
                               '$percent%',
                               style: const TextStyle(fontSize: 12.0),

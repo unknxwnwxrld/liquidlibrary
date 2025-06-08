@@ -81,12 +81,12 @@ class _DynamicMainPageState extends State<DynamicMainPage> {
             } else {
               final books = snapshot.data!;
               return ListView.builder(
-                padding: EdgeInsets.all(8),
+                padding: const EdgeInsets.only(left: 12, right: 12),
                 itemCount: books.length,
                 itemBuilder: (context, index) {
                   final book = books[index];
                   return Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 4),
+                    padding: const EdgeInsets.symmetric(vertical: 0),
                     child: BookCard(
                       title: book.title,
                       author: book.author,
