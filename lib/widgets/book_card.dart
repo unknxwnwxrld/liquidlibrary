@@ -1,25 +1,46 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:liquidlibrary/ui/instance_edit_page.dart';
 
 class BookCard extends StatelessWidget {
   final String title;
   final String author;
-  final String coverUrl;
+  final String coverPath;
   final int currentPage;
   final int totalPages;
+  final int? bookId;
 
   const BookCard({
     super.key,
     required this.title,
     required this.author,
-    required this.coverUrl,
+    required this.coverPath,
     required this.currentPage,
     required this.totalPages,
+    this.bookId,
   });
 
   @override
   Widget build(BuildContext context) {
     final progress = totalPages > 0 ? currentPage / totalPages : 0.0;
     final percent = totalPages > 0 ? ((progress * 100).round()).toString() : '0';
+
+    Widget coverWidget;
+    if (coverPath.isEmpty || !(File(coverPath).existsSync())) {
+      coverWidget = Image.asset(
+        'assets/images/book_cover_placeholder.png',
+        width: 100.0,
+        height: 134.0,
+        fit: BoxFit.cover,
+      );
+    } else {
+      coverWidget = Image.file(
+        File(coverPath),
+        width: 100.0,
+        height: 134.0,
+        fit: BoxFit.cover,
+      );
+    }
 
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -40,12 +61,7 @@ class BookCard extends StatelessWidget {
                 children: [
                   ClipRRect(
                     borderRadius: BorderRadius.circular(7.0),
-                    child: Image.asset(
-                      coverUrl,
-                      width: 100.0,
-                      height: 134.0,
-                      fit: BoxFit.cover,
-                    ),
+                    child: coverWidget,
                   ),
                   const SizedBox(width: 12.0),
                   Expanded(
@@ -95,9 +111,16 @@ class BookCard extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
                               FilledButton.tonalIcon(
-                                onPressed: () {},
-                                label: const Text('Resume'),
-                                icon: const Icon(Icons.play_arrow),
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => InstanceEditPage(bookId: bookId),
+                                    ),
+                                  );
+                                },
+                                label: const Text('Edit'),
+                                icon: const Icon(Icons.edit_outlined),
                               ),
                             ],
                           ),
@@ -114,3 +137,5 @@ class BookCard extends StatelessWidget {
     );
   }
 }
+
+// Usage

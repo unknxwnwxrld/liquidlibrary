@@ -10,8 +10,10 @@ dependencies:
   flutter:
     sdk: flutter
   sqflite: any
+  sqflite_common_ffi: any
   path_provider: any
   path: any
+  image_picker: any
 
 dev_dependencies:
   flutter_test:
