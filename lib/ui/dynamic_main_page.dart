@@ -16,8 +16,8 @@ class DynamicMainPage extends StatefulWidget {
 
 class _DynamicMainPageState extends State<DynamicMainPage> {
   int _selectedIndex = 0;
-
-  Future<List<Book>> _booksFuture = DBProvider.db.getAllBooks();
+  final List<String> _tags = ['Reading', 'Planned', 'Complete', 'Holded', 'Dropped'];
+  late List<Future<List<Book>>> _booksFutures;
 
   @override
   void initState() {
@@ -27,7 +27,7 @@ class _DynamicMainPageState extends State<DynamicMainPage> {
 
   void _loadBooks() {
     setState(() {
-      _booksFuture = DBProvider.db.getAllBooks();
+      _booksFutures = _tags.map((tag) => DBProvider.db.getBooksByTag(tag)).toList();
     });
   }
 
@@ -68,17 +68,16 @@ class _DynamicMainPageState extends State<DynamicMainPage> {
 
   Widget _buildLibraryTabView() {
     return TabBarView(
-      children: [
-        // Первый таб — список книг из базы
-        FutureBuilder<List<Book>>(
-          future: _booksFuture,
+      children: List.generate(_tags.length, (tabIndex) {
+        return FutureBuilder<List<Book>>(
+          future: _booksFutures[tabIndex],
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(child: CircularProgressIndicator());
             } else if (snapshot.hasError) {
               return Center(child: Text('Error: ${snapshot.error}'));
             } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-              return Center(child: Text('Your library is empty'));
+              return Center(child: Text('No books in this section'));
             } else {
               final books = snapshot.data!;
               return ListView.builder(
@@ -94,36 +93,31 @@ class _DynamicMainPageState extends State<DynamicMainPage> {
                       coverPath: book.coverPath,
                       currentPage: book.currentPage,
                       totalPages: book.totalPages,
-                      bookId: book.id, // <-- добавьте эту строку!
+                      bookId: book.id,
+                      onChanged: _loadBooks,
                     ),
                   );
                 },
               );
             }
           },
-        ),
-
-        // Остальные табы — заглушки, как было
-        Center(child: Text('Planned')),
-        Center(child: Text('Completed')),
-        Center(child: Text('Holded')),
-        Center(child: Text('Dropped')),
-      ],
+        );
+      }),
     );
   }
 
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 5,
+      length: _tags.length,
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         home: Scaffold(
           appBar: AppBar(
             title: Icon(Icons.water_drop),
             actions: _buildActions(context)[_selectedIndex],
-            bottom: _selectedIndex == 0
-                ? const TabBar(
+            bottom: _selectedIndex == 0 // Только для Library
+                ? TabBar(
                     tabs: [
                       Tab(icon: Icon(Icons.radio_button_unchecked)),
                       Tab(icon: Icon(Icons.control_point)),
@@ -136,8 +130,7 @@ class _DynamicMainPageState extends State<DynamicMainPage> {
           ),
           body: _selectedIndex == 0
               ? _buildLibraryTabView()
-              : _pages[_selectedIndex - 1], // -1, т.к. _pages без Library
-
+              : _pages[_selectedIndex - 1],
           bottomNavigationBar: BottomNavigationBar(
             currentIndex: _selectedIndex,
             onTap: _onItemTapped,
