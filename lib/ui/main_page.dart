@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:liquidlibrary/ui/dynamicMainPage.dart';
+import 'package:liquidlibrary/ui/dynamic_main_page.dart';
 
 class MainPage extends StatelessWidget {
   const MainPage ({Key? key}) : super(key: key);

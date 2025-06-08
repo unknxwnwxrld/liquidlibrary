@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:liquidlibrary/widgets/instanceSources.dart';
+import 'package:liquidlibrary/widgets/instance_sources.dart';
 
 class AddInstance extends StatelessWidget {
   const AddInstance({super.key});
