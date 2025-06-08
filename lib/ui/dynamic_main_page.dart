@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:liquidlibrary/widgets/bookCard.dart';
-import 'package:liquidlibrary/ui/instanceSourcesPage.dart';
-import 'package:liquidlibrary/ui/instanceEditPage.dart';
+import 'package:liquidlibrary/widgets/book_card.dart';
+import 'package:liquidlibrary/ui/instance_sources_page.dart';
+import 'package:liquidlibrary/ui/instance_edit_%D0%B7age.dart';
 
 class DynamicMainPage extends StatefulWidget {
   const DynamicMainPage({super.key});
@@ -72,10 +72,9 @@ class _DynamicMainPageState extends State<DynamicMainPage> {
                 Align(
                   alignment: Alignment.topCenter,
                   child: BookCard(
-                    title: 'Повелитель тайн',
-                    author: 'unknown',
-                    coverUrl:
-                      'https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1723688384i/58826678.jpg',
+                    title: 'Very very very long book title',
+                    author: 'Very very very long book author',
+                    coverUrl:'assets/images/book_cover_placeholder.png',
                     currentPage: 100,
                     totalPages: 300,
                   ),

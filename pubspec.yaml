@@ -9,6 +9,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  sqflite: any
+  path_provider: any
+  path: any
 
 dev_dependencies:
   flutter_test:
@@ -17,3 +20,8 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/data/
+    - assets/fonts/
+    - assets/icons/
+    - assets/images/
