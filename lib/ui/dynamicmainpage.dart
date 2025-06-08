@@ -17,7 +17,7 @@ class _DynamicMainPageState extends State<DynamicMainPage> {
       IconButton(onPressed: () {}, icon: Icon(Icons.filter_list)),
       IconButton(onPressed: () {}, icon: Icon(Icons.search)),
     ],
-    [],
+    [IconButton(onPressed: () {}, icon: Icon(Icons.person))],
     []
   ];
 
@@ -44,36 +44,40 @@ class _DynamicMainPageState extends State<DynamicMainPage> {
             title: Icon(Icons.water_drop),
             actions: _actions[_selectedIndex],
             bottom: _selectedIndex == 0
-                ? const TabBar(
-                    tabs: [
-                      Tab(icon: Icon(Icons.radio_button_unchecked)),
-                      Tab(icon: Icon(Icons.control_point)),
-                      Tab(icon: Icon(Icons.check_circle_outline)),
-                      Tab(icon: Icon(Icons.schedule)),
-                      Tab(icon: Icon(Icons.highlight_off)),
-                    ],
-                  )
-                : null,
+            ? const TabBar(
+                tabs: [
+                  Tab(icon: Icon(Icons.radio_button_unchecked)),
+                  Tab(icon: Icon(Icons.control_point)),
+                  Tab(icon: Icon(Icons.check_circle_outline)),
+                  Tab(icon: Icon(Icons.schedule)),
+                  Tab(icon: Icon(Icons.highlight_off)),
+                ],
+              )
+            : null,
           ),
+
           body: _selectedIndex == 0
-              ? TabBarView(
-                  children: [
-                    Align(
-                      alignment: Alignment.topCenter,
-                      child: BookCard(
-                        title: 'Повелитель тайн',
-                        author: 'unknown',
-                        coverUrl:
-                            'https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1723688384i/58826678.jpg',
-                      ),
-                    ),
-                    Center(child: Text('Planned')),
-                    Center(child: Text('Completed')),
-                    Center(child: Text('Holded')),
-                    Center(child: Text('Dropped')),
-                  ],
-                )
-              : _pages[_selectedIndex],
+          ? TabBarView(
+              children: [
+                Align(
+                  alignment: Alignment.topCenter,
+                  child: BookCard(
+                    title: 'Повелитель тайн',
+                    author: 'unknown',
+                    coverUrl:
+                      'https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1723688384i/58826678.jpg',
+                    currentPage: 100,
+                    totalPages: 300,
+                  ),
+                ),
+                Center(child: Text('Planned')),
+                Center(child: Text('Completed')),
+                Center(child: Text('Holded')),
+                Center(child: Text('Dropped')),
+              ],
+            )
+          : _pages[_selectedIndex],
+
           bottomNavigationBar: BottomNavigationBar(
             currentIndex: _selectedIndex,
             onTap: _onItemTapped,
