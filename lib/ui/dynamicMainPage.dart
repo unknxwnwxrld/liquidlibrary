@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:liquidlibrary/widgets/bookcard.dart';
+import 'package:liquidlibrary/widgets/bookCard.dart';
+import 'package:liquidlibrary/ui/instanceSourcesPage.dart';
+import 'package:liquidlibrary/ui/instanceEditPage.dart';
 
 class DynamicMainPage extends StatefulWidget {
   const DynamicMainPage({super.key});
@@ -11,9 +13,17 @@ class DynamicMainPage extends StatefulWidget {
 class _DynamicMainPageState extends State<DynamicMainPage> {
   int _selectedIndex = 0;
 
-  final List<List<Widget>> _actions = [
+  List<List<Widget>> _buildActions(BuildContext context) => [
     [
-      IconButton(onPressed: () {}, icon: Icon(Icons.add)),
+      IconButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => InstanceEditPage(instanceId: 'new')),
+          );
+        },
+        icon: Icon(Icons.add),
+      ),
       IconButton(onPressed: () {}, icon: Icon(Icons.filter_list)),
       IconButton(onPressed: () {}, icon: Icon(Icons.search)),
     ],
@@ -42,7 +52,7 @@ class _DynamicMainPageState extends State<DynamicMainPage> {
         home: Scaffold(
           appBar: AppBar(
             title: Icon(Icons.water_drop),
-            actions: _actions[_selectedIndex],
+            actions: _buildActions(context)[_selectedIndex],
             bottom: _selectedIndex == 0
             ? const TabBar(
                 tabs: [
