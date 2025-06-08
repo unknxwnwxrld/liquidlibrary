@@ -28,7 +28,8 @@ class DBProvider {
           author TEXT,
           coverPath TEXT,
           currentPage INTEGER,
-          totalPages INTEGER
+          totalPages INTEGER,
+          tag TEXT
         )
       ''');
     });
@@ -58,5 +59,12 @@ class DBProvider {
   Future<int> deleteBook(int id) async {
     final db = await database;
     return await db.delete('Books', where: 'id = ?', whereArgs: [id]);
+  }
+
+  // Получение книг по тегу
+  Future<List<Book>> getBooksByTag(String tag) async {
+    final db = await database;
+    var res = await db.query('Books', where: 'tag = ?', whereArgs: [tag]);
+    return res.isNotEmpty ? res.map((c) => Book.fromMap(c)).toList() : [];
   }
 }

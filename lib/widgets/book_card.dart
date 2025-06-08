@@ -9,6 +9,7 @@ class BookCard extends StatelessWidget {
   final int currentPage;
   final int totalPages;
   final int? bookId;
+  final VoidCallback? onChanged;
 
   const BookCard({
     super.key,
@@ -18,6 +19,7 @@ class BookCard extends StatelessWidget {
     required this.currentPage,
     required this.totalPages,
     this.bookId,
+    this.onChanged,
   });
 
   @override
@@ -111,13 +113,16 @@ class BookCard extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
                               FilledButton.tonalIcon(
-                                onPressed: () {
-                                  Navigator.push(
+                                onPressed: () async {
+                                  final result = await Navigator.push(
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) => InstanceEditPage(bookId: bookId),
                                     ),
                                   );
+                                  if (result == true && onChanged != null) {
+                                    onChanged!();
+                                  }
                                 },
                                 label: const Text('Edit'),
                                 icon: const Icon(Icons.edit_outlined),

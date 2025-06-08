@@ -5,20 +5,28 @@ class Book {
   String coverPath;
   int currentPage;
   int totalPages;
+  String tag; // <--- добавлено
 
-  Book({this.id, required this.title, required this.author, required this.coverPath, required this.currentPage, required this.totalPages});
+  Book({
+    this.id,
+    required this.title,
+    required this.author,
+    required this.coverPath,
+    required this.currentPage,
+    required this.totalPages,
+    required this.tag, // <--- добавлено
+  });
 
-  // Преобразование из Map (для базы)
   factory Book.fromMap(Map<String, dynamic> json) => Book(
-    id: json['id'],
-    title: json['title'],
-    author: json['author'],
-    coverPath: json['coverPath'],
-    currentPage: json['currentPage'] ?? 0,
-    totalPages: json['totalPages'] ?? 0,
-  );
+        id: json['id'],
+        title: json['title'],
+        author: json['author'],
+        coverPath: json['coverPath'],
+        currentPage: json['currentPage'] ?? 0,
+        totalPages: json['totalPages'] ?? 0,
+        tag: json['tag'] ?? 'Reading', // <--- добавлено
+      );
 
-  // Преобразование в Map (для базы)
   Map<String, dynamic> toMap() {
     return {
       'id': id,
@@ -27,6 +35,7 @@ class Book {
       'coverPath': coverPath,
       'currentPage': currentPage,
       'totalPages': totalPages,
+      'tag': tag, // <--- добавлено
     };
   }
 }

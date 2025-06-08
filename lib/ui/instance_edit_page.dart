@@ -17,12 +17,12 @@ class InstanceEditPage extends StatefulWidget {
 class _InstanceEditPageState extends State<InstanceEditPage> {
   final _formKey = GlobalKey<FormState>();
 
-  // Все поля модели Book
   String _title = '';
   String _author = '';
   String _coverPath = '';
   int _currentPage = 0;
   int _totalPages = 0;
+  String _tag = 'Reading'; // <-- добавьте это
 
   bool _isLoading = false;
 
@@ -37,13 +37,17 @@ class _InstanceEditPageState extends State<InstanceEditPage> {
   Future<void> _loadBook() async {
     setState(() => _isLoading = true);
     final books = await DBProvider.db.getAllBooks();
-    final book = books.firstWhere((b) => b.id == widget.bookId, orElse: () => Book(id: null, title: '', author: '', coverPath: '', currentPage: 0, totalPages: 0));
+    final book = books.firstWhere(
+      (b) => b.id == widget.bookId,
+      orElse: () => Book(id: null, title: '', author: '', coverPath: '', currentPage: 0, totalPages: 0, tag: 'Reading'),
+    );
     setState(() {
       _title = book.title;
       _author = book.author;
       _coverPath = book.coverPath;
       _currentPage = book.currentPage;
       _totalPages = book.totalPages;
+      _tag = book.tag; // <-- загружаем тег
       _isLoading = false;
     });
   }
@@ -69,6 +73,7 @@ class _InstanceEditPageState extends State<InstanceEditPage> {
       coverPath: _coverPath,
       currentPage: _currentPage,
       totalPages: _totalPages,
+      tag: _tag, // Provide a value or add a field for tag if needed
     );
 
     if (widget.bookId == null) {
@@ -77,6 +82,13 @@ class _InstanceEditPageState extends State<InstanceEditPage> {
       await DBProvider.db.updateBook(book);
     }
     Navigator.pop(context, true);
+  }
+
+  Future<void> _deleteBook() async {
+    if (widget.bookId != null) {
+      await DBProvider.db.deleteBook(widget.bookId!);
+      Navigator.pop(context, true);
+    }
   }
 
   @override
@@ -90,6 +102,36 @@ class _InstanceEditPageState extends State<InstanceEditPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.bookId == null ? 'Add Book' : 'Edit Book'),
+        actions: widget.bookId != null
+            ? [
+                IconButton(
+                  icon: const Icon(Icons.delete),
+                  tooltip: 'Delete',
+                  onPressed: () async {
+                    final confirm = await showDialog<bool>(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        title: const Text('Delete Book'),
+                        content: const Text('Are you sure you want to delete this book?'),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.pop(context, false),
+                            child: const Text('Cancel'),
+                          ),
+                          TextButton(
+                            onPressed: () => Navigator.pop(context, true),
+                            child: const Text('Delete', style: TextStyle(color: Colors.red)),
+                          ),
+                        ],
+                      ),
+                    );
+                    if (confirm == true) {
+                      await _deleteBook();
+                    }
+                  },
+                ),
+              ]
+            : null,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -149,6 +191,26 @@ class _InstanceEditPageState extends State<InstanceEditPage> {
                   if (v == null || v <= 0) return 'Enter a valid total pages';
                   return null;
                 },
+              ),
+              DropdownButtonFormField<String>(
+                value: _tag,
+                decoration: const InputDecoration(labelText: 'Status'),
+                items: [
+                  'Reading',
+                  'Planned',
+                  'Complete',
+                  'Holded',
+                  'Dropped',
+                ].map((tag) => DropdownMenuItem(
+                      value: tag,
+                      child: Text(tag),
+                    )).toList(),
+                onChanged: (value) {
+                  setState(() {
+                    _tag = value!;
+                  });
+                },
+                onSaved: (value) => _tag = value ?? 'Reading',
               ),
               const SizedBox(height: 20),
               ElevatedButton(
