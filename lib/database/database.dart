@@ -29,7 +29,7 @@ class DBProvider {
           coverPath TEXT,
           currentPage INTEGER,
           totalPages INTEGER,
-          tag TEXT
+          tag TEXT,
         )
       ''');
     });
