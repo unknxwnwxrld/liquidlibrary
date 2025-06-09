@@ -5,6 +5,16 @@ import 'package:sqflite/sqflite.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart' show databaseFactoryFfi, sqfliteFfiInit;
 
+final ThemeData lightTheme = ThemeData(
+  brightness: Brightness.light,
+  colorSchemeSeed: Colors.deepPurple,
+);
+
+final ThemeData darkTheme = ThemeData(
+  brightness: Brightness.dark,
+  colorSchemeSeed: Colors.deepPurple,
+);
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -15,5 +25,13 @@ void main() async {
     databaseFactory = databaseFactoryFfi;
   }
 
-  runApp(MainPage());
+  runApp(
+    MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: lightTheme,
+      darkTheme: darkTheme,
+      themeMode: ThemeMode.system,
+      home: MainPage(),
+    ),
+  );
 }

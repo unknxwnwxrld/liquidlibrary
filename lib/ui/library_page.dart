@@ -109,49 +109,46 @@ class _DynamicMainPageState extends State<DynamicMainPage> {
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: _tags.length,
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        home: Scaffold(
-          appBar: AppBar(
-            title: Icon(Icons.water_drop),
-            actions: _buildActions(context)[_selectedIndex],
-            bottom: _selectedIndex == 0 // Только для Library
-                ? TabBar(
-                    tabs: [
-                      Tab(icon: Icon(Icons.radio_button_unchecked)),
-                      Tab(icon: Icon(Icons.control_point)),
-                      Tab(icon: Icon(Icons.check_circle_outline)),
-                      Tab(icon: Icon(Icons.schedule)),
-                      Tab(icon: Icon(Icons.highlight_off)),
-                    ],
-                  )
-                : null,
-          ),
-          body: _selectedIndex == 0
-              ? _buildLibraryTabView()
-              : _pages[_selectedIndex - 1],
-          bottomNavigationBar: BottomNavigationBar(
-            currentIndex: _selectedIndex,
-            onTap: _onItemTapped,
-            showUnselectedLabels: true,
-            type: BottomNavigationBarType.fixed,
-            selectedFontSize: 12,
-            unselectedFontSize: 12,
-            items: const [
-              BottomNavigationBarItem(
-                icon: Icon(Icons.book),
-                label: 'Library',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.person),
-                label: 'Profile',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.settings),
-                label: 'Settings',
-              ),
-            ],
-          ),
+      child: Scaffold(
+        appBar: AppBar(
+          title: Icon(Icons.water_drop),
+          actions: _buildActions(context)[_selectedIndex],
+          bottom: _selectedIndex == 0
+              ? TabBar(
+                  tabs: [
+                    Tab(icon: Icon(Icons.radio_button_unchecked)),
+                    Tab(icon: Icon(Icons.control_point)),
+                    Tab(icon: Icon(Icons.check_circle_outline)),
+                    Tab(icon: Icon(Icons.schedule)),
+                    Tab(icon: Icon(Icons.highlight_off)),
+                  ],
+                )
+              : null,
+        ),
+        body: _selectedIndex == 0
+            ? _buildLibraryTabView()
+            : _pages[_selectedIndex - 1],
+        bottomNavigationBar: BottomNavigationBar(
+          currentIndex: _selectedIndex,
+          onTap: _onItemTapped,
+          showUnselectedLabels: true,
+          type: BottomNavigationBarType.fixed,
+          selectedFontSize: 12,
+          unselectedFontSize: 12,
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.book),
+              label: 'Library',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person),
+              label: 'Profile',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.settings),
+              label: 'Settings',
+            ),
+          ],
         ),
       ),
     );

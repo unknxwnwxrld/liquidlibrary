@@ -297,7 +297,6 @@ class _InstanceEditPageState extends State<InstanceEditPage> {
                                                 Icon(
                                                   currentIconData,
                                                   size: 20,
-                                                  color: Colors.grey[700],
                                                 ),
                                                 const SizedBox(width: 8),
                                                 Expanded( // <--- И здесь, чтобы текст не выходил за рамки
