@@ -44,101 +44,91 @@ class BookCard extends StatelessWidget {
       );
     }
 
-    return Padding(
-      padding: const EdgeInsets.all(4),
-      child: SizedBox(
-        height: 167.0,
-        width: double.infinity,
-        child: Card(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12.0),
-          ),
-          child: InkWell(
-            borderRadius: BorderRadius.circular(12.0),
-            onTap: () {},
-            child: Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(7.0),
-                    child: coverWidget,
-                  ),
-                  const SizedBox(width: 12.0),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          title,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.bold,
-                          ),
+    return SizedBox(
+      height: 167.0,
+      width: double.infinity,
+      child: InkWell(
+          onTap: () async {
+            final result = await Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => InstanceEditPage(bookId: bookId),
+              ),
+            );
+            if (result == true && onChanged != null) {
+              onChanged!();
+            }
+          },
+          child: Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(7.0),
+                  child: coverWidget,
+                ),
+                const SizedBox(width: 12.0),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        title,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.bold,
                         ),
-                        const SizedBox(height: 4.0),
-                        Text(
-                          author,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            fontSize: 16.0,
-                            color: Colors.grey[600],
-                          ),
+                      ),
+                      const SizedBox(height: 4.0),
+                      Text(
+                        author,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontSize: 16.0,
+                          color: Colors.grey[600],
                         ),
-                        const SizedBox(height: 5.0),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: LinearProgressIndicator(
-                                value: progress,
-                                backgroundColor: Colors.grey[300],
-                              ),
+                      ),
+                      const SizedBox(height: 20.0),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: LinearProgressIndicator(
+                              value: progress,
+                              backgroundColor: Colors.grey[300],
                             ),
-                            const SizedBox(width: 5.0),
-                            Text(
-                              '$percent%',
+                          ),
+                          const SizedBox(width: 5.0),
+                          Text(
+                            '$percent%',
+                            style: const TextStyle(fontSize: 12.0),
+                          ),
+                          const SizedBox(width: 10.0),
+                        ],
+                      ),
+                      Expanded(
+                        child: Padding (
+                          padding: const EdgeInsets.only(right: 10.0),
+                          child: Container(
+                            alignment: Alignment.centerRight,
+                            child: Text(
+                              '$currentPage / $totalPages',
                               style: const TextStyle(fontSize: 12.0),
                             ),
-                            const SizedBox(width: 10.0),
-                          ],
+                          )
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 12.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              FilledButton.tonalIcon(
-                                onPressed: () async {
-                                  final result = await Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => InstanceEditPage(bookId: bookId),
-                                    ),
-                                  );
-                                  if (result == true && onChanged != null) {
-                                    onChanged!();
-                                  }
-                                },
-                                label: const Text('Edit'),
-                                icon: const Icon(Icons.edit_outlined),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
-      ),
     );
   }
 }
