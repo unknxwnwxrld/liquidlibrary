@@ -205,7 +205,7 @@ class _InstanceEditPageState extends State<InstanceEditPage> {
         child: Column(
           children: [
             SizedBox(
-              height: 160,
+              height: 176,
               child: Row(
                 children: [
                   Padding(
@@ -237,10 +237,11 @@ class _InstanceEditPageState extends State<InstanceEditPage> {
                   Expanded(
                     child: Form(
                       key: _formKeyMain,
-                      child: ListView(
+                      child: Column(
                         children: <Widget>[
                           TextFormField(
                             decoration: const InputDecoration(hintText: 'Title', border: InputBorder.none),
+                            maxLines: 2,
                             initialValue: _title,
                             onSaved: (value) => _title = value ?? '',
                             validator: (value) =>
@@ -254,7 +255,7 @@ class _InstanceEditPageState extends State<InstanceEditPage> {
                             value == null || value.isEmpty ? 'Please enter an author' : null,
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(top: 16.0, bottom: 16.0, right: 119.0),
+                            padding: const EdgeInsets.only(top: 0, bottom: 16.0, right: 119.0),
                             child: SizedBox(
                               width: 150,
                               child: FormField<String>(
@@ -330,7 +331,7 @@ class _InstanceEditPageState extends State<InstanceEditPage> {
                 // Убрал SizedBox с фиксированной высотой, чтобы ListView мог скроллиться, если контента много
                 child: Form(
                   key: _formKeyDetails,
-                  child: ListView(
+                  child: Column(
                     children: <Widget>[
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -339,6 +340,7 @@ class _InstanceEditPageState extends State<InstanceEditPage> {
                             width: 150, // Можно сделать гибче через Expanded
                             height: 75,
                             decoration: BoxDecoration(
+                              color: Colors.white,
                               border: Border.all(width: 0.5, color: Colors.grey),
                               borderRadius: const BorderRadius.horizontal(
                                 left: Radius.circular(38.0), // Сделал радиус чуть меньше для эстетики
