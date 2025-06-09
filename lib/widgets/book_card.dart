@@ -90,7 +90,6 @@ class BookCard extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
                           fontSize: 16.0,
-                          color: Colors.grey[600],
                         ),
                       ),
                       const SizedBox(height: 20.0),
@@ -99,7 +98,6 @@ class BookCard extends StatelessWidget {
                           Expanded(
                             child: LinearProgressIndicator(
                               value: progress,
-                              backgroundColor: Colors.grey[300],
                             ),
                           ),
                           const SizedBox(width: 5.0),
