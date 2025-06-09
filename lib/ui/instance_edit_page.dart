@@ -340,7 +340,6 @@ class _InstanceEditPageState extends State<InstanceEditPage> {
                             width: 150, // Можно сделать гибче через Expanded
                             height: 75,
                             decoration: BoxDecoration(
-                              color: Colors.white,
                               border: Border.all(width: 0.5, color: Colors.grey),
                               borderRadius: const BorderRadius.horizontal(
                                 left: Radius.circular(38.0), // Сделал радиус чуть меньше для эстетики
