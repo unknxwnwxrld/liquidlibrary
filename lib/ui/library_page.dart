@@ -1,22 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:liquidlibrary/widgets/book_card.dart';
-import 'package:liquidlibrary/ui/instance_sources_page.dart';
-import 'package:liquidlibrary/ui/instance_edit_page.dart';
-
-// Импортируем модель и провайдер базы (путь подкорректируйте под свой проект)
 import 'package:liquidlibrary/models/book.dart';
-import 'package:liquidlibrary/database/database.dart';
+import 'package:liquidlibrary/databases/dbprovider.dart';
+import 'package:liquidlibrary/widgets/library_book_card.dart';
 
-class DynamicMainPage extends StatefulWidget {
-  const DynamicMainPage({super.key});
+class LibraryPage extends StatefulWidget {
+  const LibraryPage({super.key});
 
   @override
-  State<DynamicMainPage> createState() => _DynamicMainPageState();
+  State<LibraryPage> createState() => _LibraryPageState();
 }
 
-class _DynamicMainPageState extends State<DynamicMainPage> {
-  int _selectedIndex = 0;
-  final List<String> _tags = ['Reading', 'Planned', 'Complete', 'Holded', 'Dropped'];
+class _LibraryPageState extends State<LibraryPage> {
+  final dbprovider = DBProvider.db;
+  final List<String> _statuses = ['Reading', 'Planned', 'Complete', 'Holded', 'Dropped'];
   late List<Future<List<Book>>> _booksFutures;
 
   @override
@@ -27,48 +23,14 @@ class _DynamicMainPageState extends State<DynamicMainPage> {
 
   void _loadBooks() {
     setState(() {
-      _booksFutures = _tags.map((tag) => DBProvider.db.getBooksByTag(tag)).toList();
-    });
-  }
-
-  List<List<Widget>> _buildActions(BuildContext context) => [
-        [
-          IconButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => InstanceEditPage(bookId: null),
-                ),
-              ).then((value) {
-                if (value == true) {
-                  _loadBooks();
-                }
-              });
-            },
-            icon: Icon(Icons.add),
-          ),
-          IconButton(onPressed: () {}, icon: Icon(Icons.filter_list)),
-          IconButton(onPressed: () {}, icon: Icon(Icons.search)),
-        ],
-        [IconButton(onPressed: () {}, icon: Icon(Icons.person))],
-        []
-      ];
-
-  final List<Widget> _pages = [
-    Center(child: Text('Profile')),
-    Center(child: Text('Settings')),
-  ];
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
+      _booksFutures = _statuses.map((status) => DBProvider.db.getBooksByStatus(status)).toList();
     });
   }
 
   Widget _buildLibraryTabView() {
+    _booksFutures = _statuses.map((status) => DBProvider.db.getBooksByStatus(status)).toList();
     return TabBarView(
-      children: List.generate(_tags.length, (tabIndex) {
+      children: List.generate(_statuses.length, (tabIndex) {
         return FutureBuilder<List<Book>>(
           future: _booksFutures[tabIndex],
           builder: (context, snapshot) {
@@ -86,15 +48,11 @@ class _DynamicMainPageState extends State<DynamicMainPage> {
                   final book = books[index];
                   return Padding(
                     padding: const EdgeInsets.all(0),
-                    child: BookCard(
+                    child: LibraryBookCard(
                       title: book.title,
-                      author: book.author,
+                      author: book.author ?? 'Unknown Author',
                       coverPath: book.coverPath,
-                      currentPage: book.currentPage,
-                      totalPages: book.totalPages,
-                      bookId: book.id,
-                      onChanged: _loadBooks,
-                    ),
+                    )
                   );
                 },
               );
@@ -108,49 +66,27 @@ class _DynamicMainPageState extends State<DynamicMainPage> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: _tags.length,
+      length: _statuses.length,
       child: Scaffold(
         appBar: AppBar(
-          title: Icon(Icons.water_drop),
-          actions: _buildActions(context)[_selectedIndex],
-          bottom: _selectedIndex == 0
-              ? TabBar(
-                  tabs: [
-                    Tab(icon: Icon(Icons.radio_button_unchecked)),
-                    Tab(icon: Icon(Icons.control_point)),
-                    Tab(icon: Icon(Icons.check_circle_outline)),
-                    Tab(icon: Icon(Icons.schedule)),
-                    Tab(icon: Icon(Icons.highlight_off)),
-                  ],
-                )
-              : null,
+          title: const Text('Library'),
+          bottom: TabBar(
+            tabs: [
+              Tab(icon: Icon(Icons.radio_button_unchecked)),
+              Tab(icon: Icon(Icons.control_point)),
+              Tab(icon: Icon(Icons.check_circle_outline)),
+              Tab(icon: Icon(Icons.schedule)),
+              Tab(icon: Icon(Icons.highlight_off)),
+            ],
+          ),
         ),
-        body: _selectedIndex == 0
-            ? _buildLibraryTabView()
-            : _pages[_selectedIndex - 1],
-        bottomNavigationBar: BottomNavigationBar(
-          currentIndex: _selectedIndex,
-          onTap: _onItemTapped,
-          showUnselectedLabels: true,
-          type: BottomNavigationBarType.fixed,
-          selectedFontSize: 12,
-          unselectedFontSize: 12,
-          items: const [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.book),
-              label: 'Library',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              label: 'Profile',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.settings),
-              label: 'Settings',
-            ),
-          ],
+        body: _buildLibraryTabView(),
+        floatingActionButton: FloatingActionButton(
+          onPressed: (){},
+          tooltip: 'New book',
+          child: const Icon(Icons.add),
         ),
-      ),
+      )
     );
   }
 }

@@ -1,37 +1,22 @@
 import 'package:flutter/material.dart';
-import 'ui/main_page.dart';
+import 'package:liquidlibrary/ui/app_home.dart';
+import 'package:liquidlibrary/services/themes.dart';
 import 'dart:io';
-import 'package:sqflite/sqflite.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
-import 'package:sqflite_common_ffi/sqflite_ffi.dart' show databaseFactoryFfi, sqfliteFfiInit;
-
-final ThemeData lightTheme = ThemeData(
-  brightness: Brightness.light,
-  colorSchemeSeed: Colors.deepPurple,
-);
-
-final ThemeData darkTheme = ThemeData(
-  brightness: Brightness.dark,
-  colorSchemeSeed: Colors.deepPurple,
-);
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-
-  if (Platform.isWindows || Platform.isLinux) {
-    // Инициализация FFI для sqflite на Windows и Linux
-    sqfliteFfiInit();
-    // Устанавливаем фабрику базы данных для использования FFI
-    databaseFactory = databaseFactoryFfi;
+  if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
+    sqfliteFfiInit(); // Инициализируем FFI
+    databaseFactory = databaseFactoryFfi; // Устанавливаем factory для sqflite
   }
-
   runApp(
     MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: lightTheme,
-      darkTheme: darkTheme,
+      theme: Themes.getLightTheme(),
+      darkTheme: Themes.getDarkTheme(),
       themeMode: ThemeMode.system,
-      home: MainPage(),
-    ),
+      home: AppHome(),
+    )
   );
 }
+

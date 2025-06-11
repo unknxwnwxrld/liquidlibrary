@@ -1,3 +1,3 @@
 # liquidlibrary
 
-A book tracking and reading application.
+A new Flutter project.

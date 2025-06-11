@@ -1,4 +1,4 @@
-package com.unknxwnwxrld.liquidlibrary
+package com.example.liquidlibrary
 
 import io.flutter.embedding.android.FlutterActivity
 

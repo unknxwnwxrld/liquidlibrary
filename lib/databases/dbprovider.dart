@@ -2,12 +2,11 @@ import 'dart:io';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:liquidlibrary/models/book.dart'; // ваш класс модели
+import 'package:liquidlibrary/models/book.dart';
 
 class DBProvider {
   DBProvider._();
   static final DBProvider db = DBProvider._();
-
   static Database? _database;
 
   Future<Database> get database async {
@@ -19,7 +18,6 @@ class DBProvider {
   Future<Database> initDB() async {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
     String path = join(documentsDirectory.path, "BooksDB.db");
-    // await deleteDatabase(path);
     return await openDatabase(path, version: 1, onCreate: (Database db, int version) async {
       await db.execute('''
         CREATE TABLE Books (
@@ -30,41 +28,55 @@ class DBProvider {
           currentPage INTEGER,
           totalPages INTEGER,
           tag TEXT,
+          dateStarted TEXT,
+          dateFinished TEXT,
+          genres TEXT,
+          rating INTEGER,
+          notes TEXT,
+          cycle TEXT,
+          epubPath TEXT
         )
       ''');
     });
   }
-
-  // Создание записи
+  // CREATE, READ, UPDATE, DELETE (CRUD) operations
+  // Create
   Future<int> insertBook(Book book) async {
     final db = await database;
     return await db.insert('Books', book.toMap());
   }
-
-  // Получение всех книг
+  // Read all
   Future<List<Book>> getAllBooks() async {
     final db = await database;
-    var res = await db.query('Books');
-    List<Book> list = res.isNotEmpty ? res.map((c) => Book.fromMap(c)).toList() : [];
-    return list;
+    final List<Map<String, dynamic>> maps = await db.query('Books');
+    return List.generate(maps.length, (i) {
+      return Book.fromMap(maps[i]);
+    });
   }
-
-  // Обновление книги
+  // Read by ID
+  Future<Book?> getBookById(int id) async {
+    final db = await database;
+    final List<Map<String, dynamic>> maps = await db.query('Books', where: 'id = ?', whereArgs: [id]);
+    if (maps.isNotEmpty) {
+      return Book.fromMap(maps.first);
+    }
+    return null;
+  }
+  // Update
   Future<int> updateBook(Book book) async {
     final db = await database;
     return await db.update('Books', book.toMap(), where: 'id = ?', whereArgs: [book.id]);
   }
 
-  // Удаление книги
+  // Delete
   Future<int> deleteBook(int id) async {
     final db = await database;
     return await db.delete('Books', where: 'id = ?', whereArgs: [id]);
   }
 
-  // Получение книг по тегу
-  Future<List<Book>> getBooksByTag(String tag) async {
+  Future<List<Book>> getBooksByStatus(String status) async {
     final db = await database;
-    var res = await db.query('Books', where: 'tag = ?', whereArgs: [tag]);
+    var res = await db.query('Books', where: 'tag = ?', whereArgs: [status]);
     return res.isNotEmpty ? res.map((c) => Book.fromMap(c)).toList() : [];
   }
 }
