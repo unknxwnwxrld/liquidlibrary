@@ -18,6 +18,7 @@ class DBProvider {
   Future<Database> initDB() async {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
     String path = join(documentsDirectory.path, "BooksDB.db");
+    // await deleteDatabase(path);
     return await openDatabase(path, version: 1, onCreate: (Database db, int version) async {
       await db.execute('''
         CREATE TABLE Books (
@@ -27,21 +28,21 @@ class DBProvider {
           coverPath TEXT,
           currentPage INTEGER,
           totalPages INTEGER,
-          tag TEXT,
+          status TEXT,
           dateStarted TEXT,
           dateFinished TEXT,
           genres TEXT,
           rating INTEGER,
           notes TEXT,
           cycle TEXT,
-          epubPath TEXT
+          filePath TEXT
         )
       ''');
     });
   }
   // CREATE, READ, UPDATE, DELETE (CRUD) operations
   // Create
-  Future<int> insertBook(Book book) async {
+  Future<int> addBook(Book book) async {
     final db = await database;
     return await db.insert('Books', book.toMap());
   }
@@ -76,7 +77,7 @@ class DBProvider {
 
   Future<List<Book>> getBooksByStatus(String status) async {
     final db = await database;
-    var res = await db.query('Books', where: 'tag = ?', whereArgs: [status]);
+    var res = await db.query('Books', where: 'status = ?', whereArgs: [status]);
     return res.isNotEmpty ? res.map((c) => Book.fromMap(c)).toList() : [];
   }
 }

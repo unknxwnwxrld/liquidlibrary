@@ -20,7 +20,7 @@ class LibraryBookCard extends StatelessWidget {
       onTap: () {
         // Handle book tap
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Tapped on $title')),
+          SnackBar(content: Text('Book overview page in develop now')),
         );
       },
       child: Padding (

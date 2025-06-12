@@ -5,14 +5,14 @@ class Book {
   String? coverPath;
   int? currentPage;
   int? totalPages;
-  String? tag;
+  String? status;
   String? dateStarted;
   String? dateFinished;
   String? genres;
   int? rating;
   String? notes;
   String? cycle;
-  String? epubPath;
+  String? filePath;
 
   Book({
     this.id,
@@ -21,14 +21,14 @@ class Book {
     this.coverPath,
     this.currentPage,
     this.totalPages,
-    this.tag,
+    this.status,
     this.dateStarted,
     this.dateFinished,
     this.genres,
     this.rating,
     this.notes,
     this.cycle,
-    this.epubPath,
+    this.filePath,
   });
 
   Map<String, dynamic>toMap() {
@@ -39,14 +39,14 @@ class Book {
       'coverPath': coverPath,
       'currentPage': currentPage,
       'totalPages': totalPages,
-      'tag': tag,
+      'status': status,
       'dateStarted': dateStarted,
       'dateFinished': dateFinished,
       'genres': genres,
       'rating': rating,
       'notes': notes,
       'cycle': cycle,
-      'epubPath': epubPath,
+      'filePath': filePath,
     };
   }
 
@@ -58,14 +58,14 @@ class Book {
       coverPath: map['coverPath'],
       currentPage: map['currentPage'],
       totalPages: map['totalPages'],
-      tag: map['tag'],
+      status: map['status'],
       dateStarted: map['dateStarted'],
       dateFinished: map['dateFinished'],
       genres: map['genres'],
       rating: map['rating'],
       notes: map['notes'],
       cycle: map['cycle'],
-      epubPath: map['epubPath'],
+      filePath: map['filePath'],
     );
   }
 }

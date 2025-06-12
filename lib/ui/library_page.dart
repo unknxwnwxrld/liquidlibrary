@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:liquidlibrary/models/book.dart';
 import 'package:liquidlibrary/databases/dbprovider.dart';
 import 'package:liquidlibrary/widgets/library_book_card.dart';
+import 'package:liquidlibrary/ui/book_add_page.dart';
 
 class LibraryPage extends StatefulWidget {
   const LibraryPage({super.key});
@@ -27,6 +28,20 @@ class _LibraryPageState extends State<LibraryPage> {
     });
   }
 
+  void _navigateToAddBookPage() async {
+  final result = await Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) => BookAddPage()),
+  );
+
+  // Если result == true, значит книга добавлена — обновляем список
+  if (result == true) {
+    _loadBooks();
+    setState(() {}); // Обновляем UI
+  }
+}
+
+
   Widget _buildLibraryTabView() {
     _booksFutures = _statuses.map((status) => DBProvider.db.getBooksByStatus(status)).toList();
     return TabBarView(
@@ -41,7 +56,7 @@ class _LibraryPageState extends State<LibraryPage> {
             } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
               return Center(child: Text('No books in this section'));
             } else {
-              final books = snapshot.data!;
+              final books = snapshot.data!.reversed.toList();
               return ListView.builder(
                 itemCount: books.length,
                 itemBuilder: (context, index) {
@@ -82,7 +97,13 @@ class _LibraryPageState extends State<LibraryPage> {
         ),
         body: _buildLibraryTabView(),
         floatingActionButton: FloatingActionButton(
-          onPressed: (){},
+          onPressed: (){
+            _navigateToAddBookPage();
+            // Navigator.push(
+            //   context,
+            //   MaterialPageRoute(builder: (context) => BookAddPage()),
+            // );
+          },
           tooltip: 'New book',
           child: const Icon(Icons.add),
         ),
