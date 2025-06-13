@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:liquidlibrary/ui/book_overview_page.dart';
 import 'package:liquidlibrary/widgets/book_cover.dart';
 
 
@@ -18,10 +19,10 @@ class LibraryBookCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell (
       onTap: () {
-        // Handle book tap
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Book overview page in develop now')),
-        );
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(builder: (context) => BookOverviewPage(title: title)),
+        // );
       },
       child: Padding (
         padding: EdgeInsets.all(16.0),

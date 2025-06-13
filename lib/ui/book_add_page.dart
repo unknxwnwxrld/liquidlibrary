@@ -93,6 +93,11 @@ class BookAddPage extends StatelessWidget {
                       ),
                     ],
                   ),
+                  TextFormField(
+                    controller: _cycleController,
+                    decoration: InputDecoration(labelText: 'Cycle'),
+                    validator: (value) => null,
+                  ),
                 ],
               ),
             ),
