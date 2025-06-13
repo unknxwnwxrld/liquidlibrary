@@ -4,12 +4,14 @@ import 'package:liquidlibrary/widgets/book_cover.dart';
 
 
 class LibraryBookCard extends StatelessWidget {
+  final int? id;
   final String title;
   final String? author;
   final String? coverPath;
 
   const LibraryBookCard({
     super.key,
+    required this.id,
     required this.title,
     this.author,
     this.coverPath,
@@ -19,10 +21,10 @@ class LibraryBookCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell (
       onTap: () {
-        // Navigator.push(
-        //   context,
-        //   MaterialPageRoute(builder: (context) => BookOverviewPage(title: title)),
-        // );
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => BookOverviewPage(id: id!,)),
+        );
       },
       child: Padding (
         padding: EdgeInsets.all(16.0),

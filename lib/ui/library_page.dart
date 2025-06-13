@@ -64,7 +64,7 @@ class _LibraryPageState extends State<LibraryPage> {
                   return Padding(
                     padding: const EdgeInsets.all(0),
                     child: LibraryBookCard(
-                      
+                      id: book.id,
                       title: book.title,
                       author: book.author ?? 'Unknown Author',
                       coverPath: book.coverPath,
