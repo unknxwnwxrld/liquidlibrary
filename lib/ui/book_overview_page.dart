@@ -3,6 +3,7 @@ import 'package:liquidlibrary/widgets/book_cover.dart';
 import 'package:liquidlibrary/models/book.dart';
 import 'package:liquidlibrary/databases/dbprovider.dart';
 import 'package:liquidlibrary/services/calculator.dart';
+import 'package:liquidlibrary/ui/book_add_page.dart';
 
 class BookOverviewPage extends StatelessWidget {
   final dbprovider = DBProvider.db;
@@ -16,6 +17,10 @@ class BookOverviewPage extends StatelessWidget {
     required this.id,
     this.progress,
   });
+
+  Future<Book?> _getBook() async {
+    return await dbprovider.getBookById(id);
+  }
 
   Widget _buildBookOverview() {
     return FutureBuilder<Book?>(
@@ -96,7 +101,12 @@ class BookOverviewPage extends StatelessWidget {
           // Edit book
           IconButton(
             icon: Icon(Icons.edit),
-            onPressed: (){},
+            onPressed: () async {
+              final book = await _getBook();
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => BookAddPage(book: book)));
+            },
           ),
           // Delete book
           IconButton(

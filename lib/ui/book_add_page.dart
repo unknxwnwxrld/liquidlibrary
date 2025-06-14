@@ -3,10 +3,14 @@ import 'package:liquidlibrary/models/book.dart';
 import 'package:liquidlibrary/databases/dbprovider.dart';
 
 class BookAddPage extends StatefulWidget {
-  const BookAddPage({super.key});
+  final Book? book; // если null — добавление, если не null — редактирование
+
+  const BookAddPage({Key? key, this.book}) : super(key: key);
+
   @override
   BookAddPageState createState() => BookAddPageState();
 }
+
 
 class BookAddPageState extends State<BookAddPage> {
   final _mainFormKey = GlobalKey<FormState>();
@@ -25,47 +29,66 @@ class BookAddPageState extends State<BookAddPage> {
   String? _totalPagesErrorText;
 
   void _saveBook() async {
-    // if(_mainFormKey.currentState!.validate()) {
-      final title = _titleController.text;
-      final author = _authorController.text;
-      final cycle = _cycleController.text;
-      final genres = _genresController.text;
-      final currentPage = _currentPageController.text;
-      final totalPages = _totalPagesController.text;
-      final coverPath = _coverPathController.text;
-      final filePath = _filePathController.text;
+    final title = _titleController.text;
+    final author = _authorController.text;
+    final cycle = _cycleController.text;
+    final genres = _genresController.text;
+    final currentPage = _currentPageController.text;
+    final totalPages = _totalPagesController.text;
+    final coverPath = _coverPathController.text;
+    final filePath = _filePathController.text;
 
-      final book = Book(
-        id: null,
-        title: title,
-        author: author,
-        status: (int.tryParse(currentPage) ?? 0) == (int.tryParse(totalPages) ?? 0)
-          ? 'Complete'
-          : ((int.tryParse(currentPage) ?? 0) > 0
-          ? 'Reading'
-          : 'Planned'
-        ),
-        cycle: cycle,
-        genres: genres,
-        currentPage: int.tryParse(currentPage) ?? 0,
-        totalPages: int.tryParse(totalPages) ?? 0,
-        dateStarted: 'null',
-        dateFinished: 'null',
-        rating: 0,
-        notes: 'null',
-        coverPath: coverPath,
-        filePath: filePath,
-      );
+    final book = Book(
+      id: widget.book?.id, // если редактируем — сохраняем id
+      title: title,
+      author: author,
+      status: (int.tryParse(currentPage) ?? 0) == (int.tryParse(totalPages) ?? 0)
+        ? 'Complete'
+        : ((int.tryParse(currentPage) ?? 0) > 0
+        ? 'Reading'
+        : 'Planned'
+      ),
+      cycle: cycle,
+      genres: genres,
+      currentPage: int.tryParse(currentPage) ?? 0,
+      totalPages: int.tryParse(totalPages) ?? 0,
+      dateStarted: widget.book?.dateStarted ?? 'null',
+      dateFinished: widget.book?.dateFinished ?? 'null',
+      rating: widget.book?.rating ?? 0,
+      notes: widget.book?.notes ?? 'null',
+      coverPath: coverPath,
+      filePath: filePath,
+    );
 
+    if (widget.book == null) {
       await dbprovider.addBook(book);
-    // }
+    } else {
+      await dbprovider.updateBook(book);
+    }
   }
+
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.book != null) {
+      _titleController.text = widget.book!.title;
+      _authorController.text = widget.book!.author ?? '';
+      _cycleController.text = widget.book!.cycle ?? '';
+      _genresController.text = widget.book!.genres ?? '';
+      _currentPageController.text = widget.book!.currentPage.toString();
+      _totalPagesController.text = widget.book!.totalPages.toString();
+      _coverPathController.text = widget.book!.coverPath ?? '';
+      _filePathController.text = widget.book!.filePath ?? '';
+    }
+  }
+
 
   @override
   Widget build (BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Add Book'),
+        title: Text(widget.book == null ? 'Add Book' : 'Edit book'),
       ),
       body: Padding(
         padding: EdgeInsets.all(12.0),
@@ -213,14 +236,14 @@ class BookAddPageState extends State<BookAddPage> {
       ),
 
       floatingActionButton: FloatingActionButton(
-        tooltip: 'Save book',
+        tooltip: widget.book == null ? 'Save book' : 'Edit book',
         onPressed: () {
           if (_mainFormKey.currentState!.validate()){
             _saveBook();
             Navigator.pop(context, true);
           }
         },
-        child: const Icon(Icons.add),
+        child: widget.book == null ? const Icon(Icons.add) : const Icon(Icons.save),
       ),
     );
   }
