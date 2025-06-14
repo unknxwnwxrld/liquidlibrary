@@ -82,7 +82,7 @@ class LibraryBookCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         LinearProgressIndicator(
-                          value: calculator.calcProgress(currentPage, totalPages)/100,
+                            
                         ),
                         Align(
                           alignment: AlignmentDirectional.centerEnd,
