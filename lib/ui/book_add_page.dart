@@ -64,8 +64,13 @@ class BookAddPage extends StatelessWidget {
                 children: [
                   TextFormField(
                     controller: _titleController,
-                    decoration: InputDecoration(labelText: 'Title*'),
-                    validator: (value) => value == null || value.isEmpty ? 'Enter book title' : null,
+                    decoration: InputDecoration(labelText: 'Title'),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Please enter the title of the book";
+                      }
+                      return null;
+                    },
                   ),
                   TextFormField(
                     controller: _authorController,
@@ -79,7 +84,11 @@ class BookAddPage extends StatelessWidget {
                           controller: _currentPageController,
                           decoration: InputDecoration(labelText: 'Current Page'),
                           keyboardType: TextInputType.number,
-                          validator: (value) => null,
+                          validator: (value) {
+                            if(value == null || value == '') {
+                              return "Must be at least 0";
+                            }
+                          },
                         ),
                       ),
                       SizedBox(width: 16),
@@ -88,7 +97,14 @@ class BookAddPage extends StatelessWidget {
                           controller: _totalPagesController,
                           decoration: InputDecoration(labelText: 'Total Pages'),
                           keyboardType: TextInputType.number,
-                          validator: (value) => null,
+                          validator: (value) {
+                            final currentPage = int.tryParse(_currentPageController.text);
+                            final totalPages = int.tryParse(value ?? '');
+                            if (value == null || value == "" || currentPage == null || totalPages == null || currentPage > totalPages) {
+                              return 'Must be greater than or equal to current page';
+                            }
+                            return null;
+                          },
                         ),
                       ),
                     ],
@@ -108,12 +124,10 @@ class BookAddPage extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         tooltip: 'Save book',
         onPressed: () {
-          _saveBook();
-          // Navigator.push(
-          //   context,
-          //   MaterialPageRoute(builder: (context) => LibraryPage()),
-          // );
-          Navigator.pop(context, true);
+          if (_mainFormKey.currentState!.validate()){
+            _saveBook();
+            Navigator.pop(context, true);
+          }
         },
         child: const Icon(Icons.add),
       ),

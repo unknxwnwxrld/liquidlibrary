@@ -3,8 +3,8 @@ class Book {
   String title;
   String? author;
   String? coverPath;
-  int? currentPage;
-  int? totalPages;
+  int currentPage;
+  int totalPages;
   String? status;
   String? dateStarted;
   String? dateFinished;
@@ -19,8 +19,8 @@ class Book {
     required this.title,
     this.author,
     this.coverPath,
-    this.currentPage,
-    this.totalPages,
+    required this.currentPage,
+    required this.totalPages,
     this.status,
     this.dateStarted,
     this.dateFinished,
