@@ -3,7 +3,7 @@ import 'dart:io';
 
 class BookCover extends StatelessWidget {
   final String size;
-  final String coverPath;
+  final String? coverPath;
 
   const BookCover({
     super.key,
@@ -13,7 +13,7 @@ class BookCover extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (coverPath.isEmpty) {
+    if (coverPath == null || coverPath == '') {
       return ClipRRect(
         borderRadius: BorderRadius.circular(8.0),
         child: Container(
@@ -27,7 +27,7 @@ class BookCover extends StatelessWidget {
       return ClipRRect(
         borderRadius: BorderRadius.circular(8.0),
         child: Image.file(
-          File(coverPath),
+          File(coverPath!),
           width: size == 'small' ? 100 : 200,
           height: size == 'small' ? 134 : 268,
           fit: BoxFit.cover,

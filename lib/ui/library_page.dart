@@ -68,6 +68,8 @@ class _LibraryPageState extends State<LibraryPage> {
                       title: book.title,
                       author: book.author ?? 'Unknown Author',
                       coverPath: book.coverPath,
+                      currentPage: book.currentPage,
+                      totalPages: book.totalPages,
                     )
                   );
                 },

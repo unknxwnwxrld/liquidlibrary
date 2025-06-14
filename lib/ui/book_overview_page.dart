@@ -6,10 +6,12 @@ import 'package:liquidlibrary/databases/dbprovider.dart';
 class BookOverviewPage extends StatelessWidget {
   final dbprovider = DBProvider.db;
   final int id;
+  double? progress;
 
   BookOverviewPage({
     super.key,
     required this.id,
+    this.progress,
   });
 
   Widget _buildBookOverview() {
@@ -24,11 +26,58 @@ class BookOverviewPage extends StatelessWidget {
           return Text('Книга не найдена');
         } else {
           final book = snapshot.data!;
-          return Column(
-            children: [
-              Text('Название: ${book.title}'),
-              Text('Автор: ${book.author}'),
-            ],
+          if(book.currentPage == null || book.totalPages == null || book.totalPages == 0) {
+            progress = 0;
+          } else {
+            progress = (book.currentPage! / book.totalPages! * 100).toDouble();
+          }
+          return Padding(
+            padding: EdgeInsets.all(12.0),
+            child: Column(
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    BookCover(size: 'small', coverPath: book.coverPath),
+                    SizedBox(width: 12.0),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            book.title,
+                            overflow: TextOverflow.fade,
+                            maxLines: 2,
+                            style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+                              fontWeight: FontWeight.bold,
+                            )
+                          ),
+                          Text(
+                            book.author!,
+                            maxLines: 1,
+                            overflow: TextOverflow.fade,
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ),
+                          SizedBox(height: 24,),
+                          LinearProgressIndicator(
+                            value: progress,
+                          ),
+                          Align(
+                            alignment: AlignmentDirectional.centerEnd,
+                            child: Text('$progress%'),
+                          )
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    
+                  ],
+                ),
+              ],
+            )
           );
         }
       },
@@ -40,7 +89,12 @@ class BookOverviewPage extends StatelessWidget {
   Widget build (BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-
+        actions: [
+          IconButton(
+            icon: Icon(Icons.edit),
+            onPressed: (){},
+          )
+        ],
       ),
       body: _buildBookOverview(),
       floatingActionButton: FloatingActionButton(
