@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:liquidlibrary/widgets/book_cover.dart';
 import 'package:liquidlibrary/models/book.dart';
 import 'package:liquidlibrary/databases/dbprovider.dart';
+import 'package:liquidlibrary/services/calculator.dart';
 
 class BookOverviewPage extends StatelessWidget {
   final dbprovider = DBProvider.db;
   final int id;
   double? progress;
+
+  Calculator calculator = Calculator();
 
   BookOverviewPage({
     super.key,
@@ -60,11 +63,11 @@ class BookOverviewPage extends StatelessWidget {
                           ),
                           SizedBox(height: 24,),
                           LinearProgressIndicator(
-                            value: progress,
+                            value: calculator.calcProgress(book.currentPage, book.totalPages)/100,
                           ),
                           Align(
                             alignment: AlignmentDirectional.centerEnd,
-                            child: Text('${(progress!).toStringAsFixed(0)}%'),
+                            child: Text('${(calculator.calcProgress(book.currentPage, book.totalPages)).toStringAsFixed(0)}%'),
                           )
                         ],
                       ),

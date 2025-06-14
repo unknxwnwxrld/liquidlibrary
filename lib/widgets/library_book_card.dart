@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:liquidlibrary/ui/book_overview_page.dart';
-import 'package:liquidlibrary/ui/library_page.dart';
 import 'package:liquidlibrary/widgets/book_cover.dart';
+import 'package:liquidlibrary/services/calculator.dart';
 
 
 class LibraryBookCard extends StatelessWidget {
@@ -14,6 +14,7 @@ class LibraryBookCard extends StatelessWidget {
   double? progress;
 
   final VoidCallback onDelete;
+  Calculator calculator = Calculator();
 
   LibraryBookCard({
     super.key,
@@ -27,18 +28,9 @@ class LibraryBookCard extends StatelessWidget {
     required this.onDelete,
   });
 
-  double? calcProgress(int? currentPage, int? totalPages) {
-    if(currentPage == null || totalPages == null || totalPages == 0) {
-      progress = 0;
-    } else {
-      progress = (currentPage / totalPages * 100).toDouble();
-    }
-    return progress;
-  }
 
   @override
   Widget build(BuildContext context) {
-    calcProgress(currentPage, totalPages);
     return InkWell(
       onTap: () async {
         final result = await Navigator.push<bool>(
@@ -90,11 +82,11 @@ class LibraryBookCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         LinearProgressIndicator(
-                          value: progress,
+                          value: calculator.calcProgress(currentPage, totalPages)/100,
                         ),
                         Align(
                           alignment: AlignmentDirectional.centerEnd,
-                          child: Text('${(progress!).toStringAsFixed(0)}%'),
+                          child: Text('${(calculator.calcProgress(currentPage, totalPages)).toStringAsFixed(0)}%'),
                         ),
                         SizedBox(height: 8.0),
                         Align(
