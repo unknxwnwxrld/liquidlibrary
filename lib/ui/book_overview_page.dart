@@ -64,7 +64,7 @@ class BookOverviewPage extends StatelessWidget {
                           ),
                           Align(
                             alignment: AlignmentDirectional.centerEnd,
-                            child: Text('$progress%'),
+                            child: Text('${(progress!).toStringAsFixed(0)}%'),
                           )
                         ],
                       ),
@@ -90,10 +90,19 @@ class BookOverviewPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         actions: [
+          // Edit book
           IconButton(
             icon: Icon(Icons.edit),
             onPressed: (){},
-          )
+          ),
+          // Delete book
+          IconButton(
+            onPressed: () async {
+              await dbprovider.deleteBook(id);
+              Navigator.pop(context, true);
+            },
+            icon: Icon(Icons.delete_outline)
+          ),
         ],
       ),
       body: _buildBookOverview(),

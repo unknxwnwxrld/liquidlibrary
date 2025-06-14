@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:liquidlibrary/ui/book_overview_page.dart';
+import 'package:liquidlibrary/ui/library_page.dart';
 import 'package:liquidlibrary/widgets/book_cover.dart';
 
 
@@ -12,6 +13,8 @@ class LibraryBookCard extends StatelessWidget {
   final int? totalPages;
   double? progress;
 
+  final VoidCallback onDelete;
+
   LibraryBookCard({
     super.key,
     required this.id,
@@ -21,6 +24,7 @@ class LibraryBookCard extends StatelessWidget {
     required this.currentPage,
     required this.totalPages,
     this.progress,
+    required this.onDelete,
   });
 
   double? calcProgress(int? currentPage, int? totalPages) {
@@ -36,11 +40,14 @@ class LibraryBookCard extends StatelessWidget {
   Widget build(BuildContext context) {
     calcProgress(currentPage, totalPages);
     return InkWell(
-      onTap: () {
-        Navigator.push(
+      onTap: () async {
+        final result = await Navigator.push<bool>(
           context,
-          MaterialPageRoute(builder: (context) => BookOverviewPage(id: id!)),
+          MaterialPageRoute(builder: (_) => BookOverviewPage(id: id!))
         );
+        if(result == true) {
+          onDelete();
+        }
       },
       child: Padding(
         padding: EdgeInsets.all(16.0),
@@ -87,7 +94,7 @@ class LibraryBookCard extends StatelessWidget {
                         ),
                         Align(
                           alignment: AlignmentDirectional.centerEnd,
-                          child: Text('${(progress! * 100).toStringAsFixed(0)}%'),
+                          child: Text('${(progress!).toStringAsFixed(0)}%'),
                         ),
                         SizedBox(height: 8.0),
                         Align(

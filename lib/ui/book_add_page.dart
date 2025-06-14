@@ -27,11 +27,18 @@ class BookAddPage extends StatelessWidget {
       final coverPath = _coverPathController.text;
       final filePath = _filePathController.text;
 
+//currentPage == totalPages ? 'Complete' : 'Planned',
+
       final book = Book(
         id: null,
         title: title,
         author: author,
-        status: 'Planned',
+        status: (int.tryParse(currentPage) ?? 0) == (int.tryParse(totalPages) ?? 0)
+          ? 'Complete'
+          : ((int.tryParse(currentPage) ?? 0) > 0
+          ? 'Reading'
+          : 'Planned'
+        ),
         cycle: cycle,
         genres: genres,
         currentPage: int.tryParse(currentPage) ?? 0,

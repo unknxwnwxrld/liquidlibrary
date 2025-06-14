@@ -70,6 +70,7 @@ class _LibraryPageState extends State<LibraryPage> {
                       coverPath: book.coverPath,
                       currentPage: book.currentPage,
                       totalPages: book.totalPages,
+                      onDelete: _loadBooks,
                     )
                   );
                 },
