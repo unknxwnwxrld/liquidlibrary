@@ -5,12 +5,9 @@ import 'package:liquidlibrary/databases/dbprovider.dart';
 import 'package:liquidlibrary/services/calculator.dart';
 import 'package:liquidlibrary/ui/book_add_page.dart';
 
-class BookOverviewPage extends StatelessWidget {
-  final dbprovider = DBProvider.db;
+class BookOverviewPage extends StatefulWidget {
   final int id;
   double? progress;
-
-  Calculator calculator = Calculator();
 
   BookOverviewPage({
     super.key,
@@ -18,13 +15,21 @@ class BookOverviewPage extends StatelessWidget {
     this.progress,
   });
 
+  @override
+  State<BookOverviewPage> createState() => _BookOverviewPageState();
+}
+
+class _BookOverviewPageState extends State<BookOverviewPage> {
+  final dbprovider = DBProvider.db;
+  Calculator calculator = Calculator();
+
   Future<Book?> _getBook() async {
-    return await dbprovider.getBookById(id);
+    return await dbprovider.getBookById(widget.id);
   }
 
   Widget _buildBookOverview() {
     return FutureBuilder<Book?>(
-      future: dbprovider.getBookById(id),
+      future: dbprovider.getBookById(widget.id),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return CircularProgressIndicator();
@@ -34,6 +39,7 @@ class BookOverviewPage extends StatelessWidget {
           return Text('Книга не найдена');
         } else {
           final book = snapshot.data!;
+          double progress;
           if(book.currentPage == null || book.totalPages == null || book.totalPages == 0) {
             progress = 0;
           } else {
@@ -92,7 +98,6 @@ class BookOverviewPage extends StatelessWidget {
     );
   }
 
-
   @override
   Widget build (BuildContext context) {
     return Scaffold(
@@ -103,15 +108,19 @@ class BookOverviewPage extends StatelessWidget {
             icon: Icon(Icons.edit),
             onPressed: () async {
               final book = await _getBook();
-              Navigator.push(
+              final result = await Navigator.push(
                 context,
-                MaterialPageRoute(builder: (_) => BookAddPage(book: book)));
+                MaterialPageRoute(builder: (_) => BookAddPage(book: book)),
+              );
+              if (result == true) {
+                setState(() {}); // обновить страницу после возврата
+              }
             },
           ),
           // Delete book
           IconButton(
             onPressed: () async {
-              await dbprovider.deleteBook(id);
+              await dbprovider.deleteBook(widget.id);
               Navigator.pop(context, true);
             },
             icon: Icon(Icons.delete_outline)
