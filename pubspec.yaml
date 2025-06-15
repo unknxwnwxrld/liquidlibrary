@@ -1,7 +1,7 @@
 name: liquidlibrary
-description: "A new Flutter project."
+description: "(Deep alpha version) A book tracking and reading app based on Material Design 3. Add books locally and from sources such as Hardbook, AuthorToday, Ficbook and others."
 publish_to: 'none'
-version: 0.1.0
+version: 1.0.0+1
 
 environment:
   sdk: ^3.8.1
@@ -24,3 +24,4 @@ flutter:
   uses-material-design: true
   assets:
     - assets/images/
+
