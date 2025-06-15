@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:liquidlibrary/models/book.dart';
+import 'package:liquidlibrary/widgets/image_picker.dart';
 import 'package:liquidlibrary/databases/dbprovider.dart';
 
 class BookAddPage extends StatefulWidget {
@@ -20,9 +22,8 @@ class BookAddPageState extends State<BookAddPage> {
   final _genresController = TextEditingController();
   final _currentPageController = TextEditingController();
   final _totalPagesController = TextEditingController();
-  final _coverPathController = TextEditingController();
   final _filePathController = TextEditingController();
-
+  String _coverPath = '';
   final dbprovider = DBProvider.db;
   String? _titleErrorText;
   String? _currentPageErrorText;
@@ -35,7 +36,7 @@ class BookAddPageState extends State<BookAddPage> {
     final genres = _genresController.text;
     final currentPage = _currentPageController.text;
     final totalPages = _totalPagesController.text;
-    final coverPath = _coverPathController.text;
+    final coverPath = _coverPath;
     final filePath = _filePathController.text;
 
     final book = Book(
@@ -78,7 +79,7 @@ class BookAddPageState extends State<BookAddPage> {
       _genresController.text = widget.book!.genres ?? '';
       _currentPageController.text = widget.book!.currentPage.toString();
       _totalPagesController.text = widget.book!.totalPages.toString();
-      _coverPathController.text = widget.book!.coverPath ?? '';
+      _coverPath = widget.book!.coverPath ?? '';
       _filePathController.text = widget.book!.filePath ?? '';
     }
   }
@@ -94,6 +95,14 @@ class BookAddPageState extends State<BookAddPage> {
         padding: EdgeInsets.all(12.0),
         child: Column(
           children: [
+            CustomImagePicker(
+              coverPath: _coverPath,
+              onImagePicked: (path) {
+                setState(() {
+                  _coverPath = path;
+                });
+              },
+            ),
             Form(
               key: _mainFormKey,
               child: Column(

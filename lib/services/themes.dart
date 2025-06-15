@@ -4,14 +4,14 @@ class Themes {
   static ThemeData getLightTheme() {
     return ThemeData(
       brightness: Brightness.light,
-      colorSchemeSeed: Colors.green,
+      colorSchemeSeed: Colors.deepPurple,
     );
   }
 
   static ThemeData getDarkTheme() {
     return ThemeData(
       brightness: Brightness.dark,
-      colorSchemeSeed: Colors.green,
+      colorSchemeSeed: Colors.deepPurple,
     );
   }
 }
