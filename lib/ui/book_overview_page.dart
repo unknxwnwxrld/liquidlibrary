@@ -113,7 +113,8 @@ class _BookOverviewPageState extends State<BookOverviewPage> {
                 MaterialPageRoute(builder: (_) => BookAddPage(book: book)),
               );
               if (result == true) {
-                setState(() {}); // обновить страницу после возврата
+                setState(() {});
+                Navigator.pop(context, true); // <--- добавлено!
               }
             },
           ),

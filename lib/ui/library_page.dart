@@ -42,8 +42,11 @@ class _LibraryPageState extends State<LibraryPage> {
 }
 
 
+  // ...existing code...
+
   Widget _buildLibraryTabView() {
-    _booksFutures = _statuses.map((status) => DBProvider.db.getBooksByStatus(status)).toList();
+    // Удаляем эту строку:
+    // _booksFutures = _statuses.map((status) => DBProvider.db.getBooksByStatus(status)).toList();
     return TabBarView(
       children: List.generate(_statuses.length, (tabIndex) {
         return FutureBuilder<List<Book>>(
@@ -81,6 +84,8 @@ class _LibraryPageState extends State<LibraryPage> {
       }),
     );
   }
+
+// ...existing code...
 
   @override
   Widget build(BuildContext context) {

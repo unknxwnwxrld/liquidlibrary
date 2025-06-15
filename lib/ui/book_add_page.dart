@@ -29,7 +29,7 @@ class BookAddPageState extends State<BookAddPage> {
   String? _currentPageErrorText;
   String? _totalPagesErrorText;
 
-  void _saveBook() async {
+  Future<void> _saveBook() async {
     final title = _titleController.text;
     final author = _authorController.text;
     final cycle = _cycleController.text;
@@ -246,9 +246,9 @@ class BookAddPageState extends State<BookAddPage> {
 
       floatingActionButton: FloatingActionButton(
         tooltip: widget.book == null ? 'Save book' : 'Edit book',
-        onPressed: () {
+        onPressed: () async {
           if (_mainFormKey.currentState!.validate()){
-            _saveBook();
+            await _saveBook(); // дождаться сохранения!
             Navigator.pop(context, true);
           }
         },
