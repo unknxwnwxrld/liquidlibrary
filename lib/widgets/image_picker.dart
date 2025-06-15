@@ -15,7 +15,13 @@ class CustomImagePicker extends StatefulWidget{
 class _CustomImagePickerState extends State<CustomImagePicker> {
   File? _imageFile; // Хранит выбранное изображение
   final imagePicker.ImagePicker _picker = imagePicker.ImagePicker(); // Экземпляр ImagePicker
+  String coverPath = '';
 
+  @override
+  void initState() {
+    super.initState();
+    coverPath = widget.coverPath;
+  }
   // Метод для выбора изображения из галереи
   Future<void> _pickImage() async {
     final imagePicker.XFile? pickedFile = await _picker.pickImage(source: imagePicker.ImageSource.gallery);
@@ -44,7 +50,7 @@ class _CustomImagePickerState extends State<CustomImagePicker> {
       : ClipRRect(
         borderRadius: BorderRadius.circular(8.0),
         child: Image.file(
-          _imageFile!,
+          coverPath == '' ? _imageFile! : File(coverPath),
           width: 100,
           height: 134,
           fit: BoxFit.cover,
