@@ -18,23 +18,25 @@ class _AppHomeState extends State<AppHome> {
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: NavigationBar(
-        onDestinationSelected: (int index) {
-          setState(() {currentPageIndex = index;});
-        },
+        onDestinationSelected: (int index) {setState(() {currentPageIndex = index;});},
         selectedIndex: currentPageIndex,
         destinations: const <Widget>[
+          // Home
           NavigationDestination(
             icon: Icon(Icons.home),
             label: 'Home',
           ),
+          // Library
           NavigationDestination(
             icon: Icon(Icons.library_books),
             label: 'Library',
           ),
+          // Profile
           NavigationDestination(
             icon: Icon(Icons.person),
             label: 'Profile',
           ),
+          // Settings
           NavigationDestination(
             icon: Icon(Icons.settings),
             label: 'Settings',

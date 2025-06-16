@@ -103,7 +103,6 @@ class _BookOverviewPageState extends State<BookOverviewPage> {
     return Scaffold(
       appBar: AppBar(
         actions: [
-          // Edit book
           IconButton(
             icon: Icon(Icons.edit),
             onPressed: () async {
@@ -114,11 +113,10 @@ class _BookOverviewPageState extends State<BookOverviewPage> {
               );
               if (result == true) {
                 setState(() {});
-                Navigator.pop(context, true); // <--- добавлено!
+                Navigator.pop(context, true);
               }
             },
           ),
-          // Delete book
           IconButton(
             onPressed: () async {
               await dbprovider.deleteBook(widget.id);

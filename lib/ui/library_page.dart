@@ -34,19 +34,13 @@ class _LibraryPageState extends State<LibraryPage> {
     MaterialPageRoute(builder: (context) => BookAddPage()),
   );
 
-  // Если result == true, значит книга добавлена — обновляем список
   if (result == true) {
     _loadBooks();
-    setState(() {}); // Обновляем UI
+    setState(() {});
   }
 }
 
-
-  // ...existing code...
-
   Widget _buildLibraryTabView() {
-    // Удаляем эту строку:
-    // _booksFutures = _statuses.map((status) => DBProvider.db.getBooksByStatus(status)).toList();
     return TabBarView(
       children: List.generate(_statuses.length, (tabIndex) {
         return FutureBuilder<List<Book>>(
@@ -85,8 +79,6 @@ class _LibraryPageState extends State<LibraryPage> {
     );
   }
 
-// ...existing code...
-
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -108,10 +100,6 @@ class _LibraryPageState extends State<LibraryPage> {
         floatingActionButton: FloatingActionButton(
           onPressed: (){
             _navigateToAddBookPage();
-            // Navigator.push(
-            //   context,
-            //   MaterialPageRoute(builder: (context) => BookAddPage()),
-            // );
           },
           tooltip: 'New book',
           child: const Icon(Icons.add),

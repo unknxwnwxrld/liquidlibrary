@@ -40,13 +40,12 @@ class DBProvider {
       ''');
     });
   }
-  // CREATE, READ, UPDATE, DELETE (CRUD) operations
-  // Create
+
   Future<int> addBook(Book book) async {
     final db = await database;
     return await db.insert('Books', book.toMap());
   }
-  // Read all
+
   Future<List<Book>> getAllBooks() async {
     final db = await database;
     final List<Map<String, dynamic>> maps = await db.query('Books');
@@ -54,7 +53,7 @@ class DBProvider {
       return Book.fromMap(maps[i]);
     });
   }
-  // Read by ID
+
   Future<Book?> getBookById(int id) async {
     final db = await database;
     final List<Map<String, dynamic>> maps = await db.query('Books', where: 'id = ?', whereArgs: [id]);
@@ -63,13 +62,12 @@ class DBProvider {
     }
     return null;
   }
-  // Update
+
   Future<int> updateBook(Book book) async {
     final db = await database;
     return await db.update('Books', book.toMap(), where: 'id = ?', whereArgs: [book.id]);
   }
 
-  // Delete
   Future<int> deleteBook(int id) async {
     final db = await database;
     return await db.delete('Books', where: 'id = ?', whereArgs: [id]);

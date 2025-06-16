@@ -1,18 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:liquidlibrary/models/book.dart';
 import 'package:liquidlibrary/widgets/image_picker.dart';
 import 'package:liquidlibrary/databases/dbprovider.dart';
 
 class BookAddPage extends StatefulWidget {
-  final Book? book; // если null — добавление, если не null — редактирование
-
+  final Book? book;
   const BookAddPage({Key? key, this.book}) : super(key: key);
 
   @override
   BookAddPageState createState() => BookAddPageState();
 }
-
 
 class BookAddPageState extends State<BookAddPage> {
   final _mainFormKey = GlobalKey<FormState>();
@@ -40,7 +37,7 @@ class BookAddPageState extends State<BookAddPage> {
     final filePath = _filePathController.text;
 
     final book = Book(
-      id: widget.book?.id, // если редактируем — сохраняем id
+      id: widget.book?.id,
       title: title,
       author: author,
       status: (int.tryParse(currentPage) ?? 0) == (int.tryParse(totalPages) ?? 0)
@@ -68,7 +65,6 @@ class BookAddPageState extends State<BookAddPage> {
     }
   }
 
-
   @override
   void initState() {
     super.initState();
@@ -83,7 +79,6 @@ class BookAddPageState extends State<BookAddPage> {
       _filePathController.text = widget.book!.filePath ?? '';
     }
   }
-
 
   @override
   Widget build (BuildContext context) {
@@ -167,15 +162,15 @@ class BookAddPageState extends State<BookAddPage> {
                               return;
                             }
 
-                            // Если все проверки пройдены — сбрасываем ошибку и сохраняем значение в базу
                             setState(() {
                               _currentPageErrorText = null;
                             });
                           },
                           validator: (value) {
                             if(value == null || value == '') {
-                              return "Must be at least 0";
+                              return "Must be 0 or higher";
                             }
+                            return null;
                           }
                         ),
                       ),
@@ -252,7 +247,9 @@ class BookAddPageState extends State<BookAddPage> {
             Navigator.pop(context, true);
           }
         },
-        child: widget.book == null ? const Icon(Icons.add) : const Icon(Icons.save),
+        child: widget.book == null
+        ? const Icon(Icons.add)
+        : const Icon(Icons.save),
       ),
     );
   }
