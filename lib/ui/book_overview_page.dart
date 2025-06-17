@@ -134,7 +134,7 @@ class _BookOverviewPageState extends State<BookOverviewPage> {
                                   style: Theme.of(context).textTheme.bodyMedium,
                                 ),
                                 Text(
-                                  book.dateFinished ?? 'DD.MM.YYYY',
+                                  book.dateStarted == 'null' ? 'dd.mm.yyyy' : book.dateStarted ?? 'dd.mm.yyyy',
                                   style: Theme.of(context).textTheme.bodySmall,
                                 ),
                               ],
@@ -161,7 +161,7 @@ class _BookOverviewPageState extends State<BookOverviewPage> {
                                   style: Theme.of(context).textTheme.bodyMedium,
                                 ),
                                 Text(
-                                  book.dateStarted ?? 'DD.MM.YYYY',
+                                  book.dateFinished == 'null' ? 'dd.mm.yyyy' : book.dateFinished ?? 'dd.mm.yyyy',
                                   style: Theme.of(context).textTheme.bodySmall,
                                 ),
                               ],

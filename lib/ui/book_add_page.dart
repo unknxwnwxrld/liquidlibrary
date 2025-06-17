@@ -19,6 +19,8 @@ class BookAddPageState extends State<BookAddPage> {
   final _genresController = TextEditingController();
   final _currentPageController = TextEditingController();
   final _totalPagesController = TextEditingController();
+  final _dateStartedController = TextEditingController();
+  final _dateFinishedController = TextEditingController();
   final _filePathController = TextEditingController();
   String _coverPath = '';
   final dbprovider = DBProvider.db;
@@ -33,6 +35,8 @@ class BookAddPageState extends State<BookAddPage> {
     final genres = _genresController.text;
     final currentPage = _currentPageController.text;
     final totalPages = _totalPagesController.text;
+    final dateStarted = _dateStartedController.text;
+    final dateFinished = _dateFinishedController.text;
     final coverPath = _coverPath;
     final filePath = _filePathController.text;
 
@@ -50,8 +54,8 @@ class BookAddPageState extends State<BookAddPage> {
       genres: genres,
       currentPage: int.tryParse(currentPage) ?? 0,
       totalPages: int.tryParse(totalPages) ?? 0,
-      dateStarted: widget.book?.dateStarted ?? 'null',
-      dateFinished: widget.book?.dateFinished ?? 'null',
+      dateStarted: dateStarted,
+      dateFinished: dateFinished,
       rating: widget.book?.rating ?? 0,
       notes: widget.book?.notes ?? 'null',
       coverPath: coverPath,
@@ -75,6 +79,8 @@ class BookAddPageState extends State<BookAddPage> {
       _genresController.text = widget.book!.genres ?? '';
       _currentPageController.text = widget.book!.currentPage.toString();
       _totalPagesController.text = widget.book!.totalPages.toString();
+      _dateStartedController.text = widget.book!.dateStarted ?? 'dd.mm.yyyy';
+      _dateFinishedController.text = widget.book!.dateFinished ?? 'dd.mm.yyyy';
       _coverPath = widget.book!.coverPath ?? '';
       _filePathController.text = widget.book!.filePath ?? '';
     }
@@ -231,6 +237,31 @@ class BookAddPageState extends State<BookAddPage> {
                     controller: _cycleController,
                     decoration: InputDecoration(labelText: 'Cycle'),
                     validator: (value) => null,
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: TextFormField(
+                          controller: _dateStartedController,
+                          decoration: InputDecoration(labelText: 'Started on', hintText: 'dd.mm.yyyy'),
+                          keyboardType: TextInputType.datetime,
+                          validator: (value) {
+                            return null;
+                          }
+                        ),
+                      ),
+                      SizedBox(width: 16),
+                      Expanded(
+                        child: TextFormField(
+                          controller: _dateFinishedController,
+                          decoration: InputDecoration(labelText: 'Finished on', hintText: 'dd.mm.yyyy'),
+                          keyboardType: TextInputType.datetime,
+                          validator: (value) {
+                            return null;
+                          },
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
