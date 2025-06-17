@@ -52,7 +52,23 @@ class _BookOverviewPageState extends State<BookOverviewPage> {
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    BookCover(size: 'small', coverPath: book.coverPath),
+                    Stack(
+                      children: [
+                        BookCover(size: 'small', coverPath: book.coverPath),
+                        Positioned(
+                          right: 2,
+                          bottom: 4,
+                          child: switch (book.status) {
+                            'Reading' => Icon(Icons.radio_button_unchecked, color: Colors.deepPurpleAccent),
+                            'Planned' => Icon(Icons.control_point, color: Colors.lightBlueAccent),
+                            'Complete' => Icon(Icons.check_circle_outline, color: Colors.lightGreenAccent),
+                            'Holded' => Icon(Icons.schedule, color: Colors.orangeAccent),
+                            'Dropped' => Icon(Icons.highlight_off, color: Colors.deepOrangeAccent),
+                            _ => SizedBox.shrink(),
+                          }
+                        ),
+                      ],
+                    ),
                     SizedBox(width: 12.0),
                     Expanded(
                       child: Column(
@@ -85,10 +101,76 @@ class _BookOverviewPageState extends State<BookOverviewPage> {
                     ),
                   ],
                 ),
-                Row(
-                  children: [
-                    
-                  ],
+                Padding(
+                  padding: EdgeInsets.only(top: 24),
+                  child: Align(
+                    alignment: AlignmentDirectional.center,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min, // чтобы не растягивался на всю ширину
+                      children: [
+                        Container(
+                          width: 150,
+                          height: 80,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(12.0),
+                              bottomLeft: Radius.circular(12.0),
+                            ),
+                            color: Theme.of(context).colorScheme.primaryContainer,
+                            border: Border(
+                              right: BorderSide(
+                                color: Theme.of(context).dividerColor,
+                                width: 1.0,
+                              ),
+                            ),
+                          ),
+                          child: Center(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  book.currentPage.toString(),
+                                  style: Theme.of(context).textTheme.bodyMedium,
+                                ),
+                                Text(
+                                  book.dateFinished ?? 'DD.MM.YYYY',
+                                  style: Theme.of(context).textTheme.bodySmall,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Container(
+                          width: 150,
+                          height: 80,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                              topRight: Radius.circular(12.0),
+                              bottomRight: Radius.circular(12.0),
+                            ),
+                            color: Theme.of(context).colorScheme.primaryContainer,
+                          ),
+                          child: Center(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  book.totalPages.toString(),
+                                  style: Theme.of(context).textTheme.bodyMedium,
+                                ),
+                                Text(
+                                  book.dateStarted ?? 'DD.MM.YYYY',
+                                  style: Theme.of(context).textTheme.bodySmall,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               ],
             )
