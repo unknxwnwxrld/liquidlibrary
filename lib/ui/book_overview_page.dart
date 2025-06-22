@@ -59,11 +59,11 @@ class _BookOverviewPageState extends State<BookOverviewPage> {
                           right: 2,
                           bottom: 4,
                           child: switch (book.status) {
-                            'Reading' => Icon(Icons.radio_button_unchecked, color: Colors.deepPurpleAccent),
-                            'Planned' => Icon(Icons.control_point, color: Colors.lightBlueAccent),
-                            'Complete' => Icon(Icons.check_circle_outline, color: Colors.lightGreenAccent),
-                            'Holded' => Icon(Icons.schedule, color: Colors.orangeAccent),
-                            'Dropped' => Icon(Icons.highlight_off, color: Colors.deepOrangeAccent),
+                            'Reading' => Icon(Icons.radio_button_unchecked, color: Colors.deepPurpleAccent[100]),
+                            'Planned' => Icon(Icons.control_point, color: Colors.lightBlueAccent[100]),
+                            'Complete' => Icon(Icons.check_circle_outline, color: Colors.lightGreenAccent[100]),
+                            'Holded' => Icon(Icons.schedule, color: Colors.orangeAccent[100]),
+                            'Dropped' => Icon(Icons.highlight_off, color: Colors.deepOrangeAccent[100]),
                             _ => SizedBox.shrink(),
                           }
                         ),
