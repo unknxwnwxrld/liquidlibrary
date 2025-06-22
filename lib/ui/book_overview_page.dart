@@ -112,11 +112,11 @@ class _BookOverviewPageState extends State<BookOverviewPage> {
                           width: 150,
                           height: 80,
                           decoration: BoxDecoration(
+                            color: Theme.of(context).colorScheme.primaryContainer,
                             borderRadius: BorderRadius.only(
                               topLeft: Radius.circular(12.0),
                               bottomLeft: Radius.circular(12.0),
                             ),
-                            color: Theme.of(context).colorScheme.primaryContainer,
                             border: Border(
                               right: BorderSide(
                                 color: Theme.of(context).dividerColor,
@@ -133,23 +133,25 @@ class _BookOverviewPageState extends State<BookOverviewPage> {
                                   book.currentPage.toString(),
                                   style: Theme.of(context).textTheme.bodyMedium,
                                 ),
-                                Text(
-                                  book.dateStarted == 'null' ? 'dd.mm.yyyy' : book.dateStarted ?? 'dd.mm.yyyy',
-                                  style: Theme.of(context).textTheme.bodySmall,
-                                ),
+                                book.dateStarted != 'null' && book.dateStarted != null && book.dateStarted != ''
+                                  ? Text(
+                                      book.dateStarted == 'null' ? 'dd.mm.yyyy' : book.dateStarted ?? 'dd.mm.yyyy',
+                                      style: Theme.of(context).textTheme.bodySmall,
+                                    )
+                                  : SizedBox.shrink()
                               ],
                             ),
-                          ),
+                          )
                         ),
                         Container(
                           width: 150,
                           height: 80,
                           decoration: BoxDecoration(
+                            color: Theme.of(context).colorScheme.primaryContainer,
                             borderRadius: BorderRadius.only(
                               topRight: Radius.circular(12.0),
                               bottomRight: Radius.circular(12.0),
                             ),
-                            color: Theme.of(context).colorScheme.primaryContainer,
                           ),
                           child: Center(
                             child: Column(
@@ -160,10 +162,12 @@ class _BookOverviewPageState extends State<BookOverviewPage> {
                                   book.totalPages.toString(),
                                   style: Theme.of(context).textTheme.bodyMedium,
                                 ),
-                                Text(
+                                book.dateFinished != 'null' && book.dateFinished != null && book.dateFinished != ''
+                                ? Text(
                                   book.dateFinished == 'null' ? 'dd.mm.yyyy' : book.dateFinished ?? 'dd.mm.yyyy',
                                   style: Theme.of(context).textTheme.bodySmall,
-                                ),
+                                )
+                                : SizedBox.shrink()
                               ],
                             ),
                           ),

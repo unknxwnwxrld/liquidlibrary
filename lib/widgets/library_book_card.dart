@@ -47,7 +47,7 @@ class LibraryBookCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             BookCover(
-              coverPath: coverPath!,
+              coverPath: coverPath,
               size: 'small',
             ),
             Expanded(
@@ -106,6 +106,5 @@ class LibraryBookCard extends StatelessWidget {
         ),
       ),
     );
-
   }
 }
